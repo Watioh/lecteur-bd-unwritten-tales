@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur BD - Unwritten Tales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000; /* Fond noir pour correspondre à votre image initiale */
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a; /* Conteneur légèrement plus clair que le fond */
+            border-radius: 10px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        #chapter {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        #page-info {
+            margin: 15px 0;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        #page {
+            max-width: 100%;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            height: auto;
+            min-height: 200px;
+            background-color: #222;
+            display: block; /* S'assurer que l'image est un bloc pour bien gérer la marge */
+            margin: 0 auto;
+        }
+
+        #buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        #prev-btn, #next-btn {
+            padding: 12px 25px;
+            background-color: #5cb85c; /* Vert */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        #prev-btn:hover:not([disabled]), #next-btn:hover:not([disabled]) {
+            background-color: #4cae4c; /* Vert plus foncé au survol */
+        }
+
+        #prev-btn:disabled, #next-btn:disabled {
+            background-color: #444; /* Gris pour les boutons désactivés */
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Lecteur BD</h2>
+        <select id="chapter">
+            <option value="chap1">Chapitre 1</option>
+            <option value="chap2">Chapitre 2</option>
+            <option value="chap3">Chapitre 3</option>
+            <option value="chap4">Chapitre 4</option>
+        </select>
+
+        <p id="page-info">Page 0 / 0</p>
+
+        <div>
+            <img id="page" src="" alt="Page de la bande dessinée">
+        </div>
+
+        <div id="buttons">
+            <button id="prev-btn" disabled>Précédent</button>
+            <button id="next-btn" disabled>Suivant</button>
+        </div>
+    </div>
+
+    <script>
+        // Définition des chapitres et des pages
+        const chapters = {
+            chap1: {
+                pages: [
+                    "https://i.imgur.com/0UNHl1a.png",
+                    "https://i.imgur.com/84OHQMM.png",
+                    "https://i.imgur.com/qrCB5R6.png",
+                    "https://i.imgur.com/Nhbccgj.png",
+                    "https://i.imgur.com/rCEL2QH.png",
+                    "https://i.imgur.com/6LdfBzs.png",
+                    "https://i.imgur.com/ryE2mWw.png",
+                    "https://i.imgur.com/RR7lXn7.png",
+                    "https://i.imgur.com/7rUoApX.png",
+                    "https://i.imgur.com/Zq8UWbI.png",
+                    "https://i.imgur.com/yrW1y4p.png",
+                    "https://i.imgur.com/0dgnbvZ.png",
+                    "https://i.imgur.com/IcOeYq6.png",
+                    "https://i.imgur.com/mX9BMDh.png"
+                ]
+            },
+
+            chap2: {
+                pages: [
+                    "https://i.imgur.com/bSwLhWW.png",
+                    "https://i.imgur.com/tDpoBMZ.png",
+                    "https://i.imgur.com/3AoNX7n.png",
+                    "https://i.imgur.com/W1ksv6d.png",
+                    "https://i.imgur.com/J2kRcBG.png",
+                    "https://i.imgur.com/91mesK9.png",
+                    "https://i.imgur.com/kJeDYZa.png",
+                    "https://i.imgur.com/vQatVkB.png",
+                    "https://i.imgur.com/5pmvOV8.png",
+                    "https://i.imgur.com/OR8BTVX.png",
+                    "https://i.imgur.com/V2FivjT.png",
+                    "https://i.imgur.com/D7MmvtA.png",
+                    "https://i.imgur.com/X0KMBQk.png",
+                    "https://i.imgur.com/aVv98at.png",
+                    "https://i.imgur.com/cwfTDTc.png"
+                ]
+            },
+
+            chap3: {
+                pages: [
+                    "https://i.imgur.com/9IgnOGv.jpeg",
+                    "https://i.imgur.com/U5BKdFF.png",
+                    "https://i.imgur.com/z2LgHIc.png",
+                    "https://i.imgur.com/aanENlF.png",
+                    "https://i.imgur.com/qvzZNTq.png",
+                    "https://i.imgur.com/N36SGef.png",
+                    "https://i.imgur.com/LcZGYoE.png",
+                    "https://i.imgur.com/3JE2ms3.png",
+                    "https://i.imgur.com/UhCnYGC.png",
+                    "https://i.imgur.com/86gI24z.png",
+                    "https://i.imgur.com/mbr7bIQ.png"
+                ]
+            },
+
+            chap4: {
+                pages: [
+                    "https://i.imgur.com/kzWrhhl.png",
+                    "https://i.imgur.com/WgljjNE.png",
+                    "https://i.imgur.com/CZWNIsZ.png",
+                    "https://i.imgur.com/I6Z5mpg.png",
+                    "https://i.imgur.com/EyIq4y9.png",
+                    "https://i.imgur.com/dH6OxSX.png",
+                    "https://i.imgur.com/AvgQ4De.png",
+                    "https://i.imgur.com/EguXrNX.png",
+                    "https://i.imgur.com/iCx58SS.png",
+                    "https://i.imgur.com/v875nwQ.png",
+                    "https://i.imgur.com/OnktZl4.png",
+                    "https://i.imgur.com/GxpCakI.png",
+                    "https://i.imgur.com/MTL7KTs.png"
+                ]
+            }
+        };
+
+        const chapterSelect = document.getElementById("chapter");
+        const img = document.getElementById("page");
+        const pageInfo = document.getElementById("page-info");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+
+        let currentChapterKey;
+        let currentPageIndex = 0;
+
+        function updateReader() {
+            const chapter = chapters[currentChapterKey];
+            const totalPages = chapter ? chapter.pages.length : 0; 
+
+            if (totalPages > 0) {
+                // Afficher la page et l'info
+                img.src = chapter.pages[currentPageIndex];
+                img.alt = `Page ${currentPageIndex + 1} du chapitre ${currentChapterKey}`;
+                pageInfo.textContent = `Page ${currentPageIndex + 1} / ${totalPages}`;
+
+                // Gérer l'activation des boutons
+                prevBtn.disabled = currentPageIndex === 0;
+                nextBtn.disabled = currentPageIndex === totalPages - 1;
+            } else {
+                // Gérer le cas sans page
+                img.src = "";
+                img.alt = "Aucune page disponible";
+                pageInfo.textContent = "Page 0 / 0";
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+            }
+        }
+
+        function loadChapter(ch) {
+            currentChapterKey = ch;
+            currentPageIndex = 0; // Toujours commencer à la première page
+            updateReader();
+        }
+
+        // Écouteur pour le bouton Précédent
+        prevBtn.addEventListener("click", () => {
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+                updateReader();
+            }
+        });
+
+        // Écouteur pour le bouton Suivant
+        nextBtn.addEventListener("click", () => {
+            const chapter = chapters[currentChapterKey];
+            if (chapter && currentPageIndex < chapter.pages.length - 1) {
+                currentPageIndex++;
+                updateReader();
+            }
+        });
+
+        // Écouteur pour le changement de chapitre
+        chapterSelect.addEventListener("change", (event) => loadChapter(event.target.value));
+
+        // Initialisation du lecteur au chargement
+        loadChapter(chapterSelect.value); 
+    </script>
+
+</body>
+</html>
