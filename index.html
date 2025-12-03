@@ -87,7 +87,7 @@
         #image-modal {
             display: none;
             position: fixed;
-            z-index: 100; /* Assure que la modale est au-dessus de tout */
+            z-index: 9999; /* TRÈS IMPORTANT: Assure que la modale est au-dessus de tout */
             padding-top: 60px;
             left: 0;
             top: 0;
@@ -290,7 +290,9 @@
             if (currentPageIndex > 0) {
                 currentPageIndex--;
                 updateReader();
+                return true; // Retourne true si la navigation a réussi
             }
+            return false;
         }
         
         function goNext() {
@@ -298,14 +300,16 @@
             if (chapter && currentPageIndex < chapter.pages.length - 1) {
                 currentPageIndex++;
                 updateReader();
+                return true; // Retourne true si la navigation a réussi
             }
+            return false;
         }
 
         // --- Écouteurs d'Événements ---
 
         // Agrandissement d'image au clic
         img.addEventListener("click", () => {
-            if (img.src) { 
+            if (img.src && img.alt !== "Page de la bande dessinée") { 
                 modal.style.display = "block";
                 modalImg.src = img.src;
                 captionText.innerHTML = img.alt;
@@ -333,19 +337,32 @@
 
         // Navigation par touches fléchées
         document.addEventListener("keydown", (event) => {
-            // Empêche la navigation par flèches si on est dans la modale (pour éviter le conflit)
-            if (modal.style.display === "block") {
-                // Permet de fermer la modale avec ESC
-                if (event.key === "Escape") {
-                    modal.style.display = "none";
-                }
+            
+            let navigated = false;
+
+            // 1. Fermeture du Modal avec ESC
+            if (event.key === "Escape" && modal.style.display === "block") {
+                modal.style.display = "none";
+                return;
+            }
+            
+            // Si on tape dans le sélecteur, on ignore les flèches
+            if (event.target.tagName === 'SELECT') {
                 return;
             }
 
+            // 2. Navigation
             if (event.key === "ArrowLeft") {
-                goPrevious();
+                navigated = goPrevious();
             } else if (event.key === "ArrowRight") {
-                goNext();
+                navigated = goNext();
+            }
+
+            // 3. Mise à jour du Modal si la navigation a réussi ET que le Modal est ouvert
+            if (navigated && modal.style.display === "block") {
+                // Mettre à jour l'image de la modale avec la nouvelle image
+                modalImg.src = img.src;
+                captionText.innerHTML = img.alt;
             }
         });
 
