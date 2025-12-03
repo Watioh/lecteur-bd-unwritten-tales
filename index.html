@@ -34,8 +34,8 @@
             max-width: 900px;
             margin: 0 auto;
             /* Hauteur réduite de ~5% (20px -> 19px de padding) */
-            padding-top: 19px; 
-            padding-bottom: 19px; 
+            padding-top: 0px;
+            padding-bottom: 12px; 
             padding-left: 20px;
             padding-right: 20px;
             
@@ -57,6 +57,7 @@
             /* Lueur blanche autour du texte */
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.9),
                          0 0 20px rgba(255, 255, 255, 0.6); 
+            margin-top: 20px;
         }
         
         /* Barre de séparation blanche et arrondie */
@@ -78,12 +79,23 @@
             border: 1px solid #555;
             cursor: pointer;
             font-size: 1em;
+            z-index: 6;
+            margin-bottom: 0.5em;
         }
 
         #page-info {
-            margin: 15px 0;
             font-weight: bold;
             font-size: 1.2em;
+            z-index: 5;
+            margin-bottom:0.4rem;
+        }
+        .align{ 
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 35rem ;
+            margin-bottom: 0px;
         }
 
         #page {
@@ -103,10 +115,11 @@
             display: flex;
             justify-content: center;
             gap: 15px;
+
         }
 
         #prev-btn, #next-btn {
-            padding: 12px 25px;
+            padding: 12px 3rem;
             background-color: #8B0000; /* Rouge foncé (Dark Red) */
             color: white;
             border: none;
@@ -114,6 +127,9 @@
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.2s;
+        }
+        #next-btn{
+            padding: 12px 3.3rem;
         }
 
         #prev-btn:hover:not([disabled]), #next-btn:hover:not([disabled]) {
@@ -188,15 +204,17 @@
 
     <div class="container">
         <h2>Unwritten Tales</h2>
-        <div class="title-divider"></div> <select id="chapter">
-            <option value="chap1">Chapitre 1</option>
-            <option value="chap2">Chapitre 2</option>
-            <option value="chap3">Chapitre 3</option>
-            <option value="chap4">Chapitre 4</option>
-        </select>
+        <div class="title-divider"></div> 
+        <div class="align">
+            <select id="chapter">
+                <option value="1">Chapitre 1</option>
+                <option value="2">Chapitre 2</option>
+                <option value="3">Chapitre 3</option>z
+                <option value="4">Chapitre 4</option>
+            </select>
 
-        <p id="page-info">Page 0 / 0</p>
-
+            <p id="page-info">Page 0 / 0</p>
+        </div>
         <div>
             <img id="page" src="" alt="Page de la bande dessinée">
         </div>
@@ -205,6 +223,7 @@
             <button id="prev-btn" disabled>Précédent</button>
             <button id="next-btn" disabled>Suivant</button>
         </div>
+        <a href="https://sypha-rose-ffxiv.carrd.co/"><button id="redirect-btn" style="padding: 12px 3rem;background-color: #C68182;color: white;border: none;border-radius: 5px;cursor: pointer;font-weight: bold;transition: background-color 0.2s;margin-top: 5px;margin-bottom: 0px;">Back to Carrd</button></a>
     </div>
     
     <div id="image-modal">
@@ -215,7 +234,7 @@
 
     <script>
         const chapters = {
-            chap1: {
+            1: {
                 pages: [
                     "https://i.imgur.com/0UNHl1a.png",
                     "https://i.imgur.com/84OHQMM.png",
@@ -234,7 +253,7 @@
                 ]
             },
 
-            chap2: {
+            2: {
                 pages: [
                     "https://i.imgur.com/bSwLhWW.png",
                     "https://i.imgur.com/tDpoBMZ.png",
@@ -254,7 +273,7 @@
                 ]
             },
 
-            chap3: {
+            3: {
                 pages: [
                     "https://i.imgur.com/9IgnOGv.jpeg",
                     "https://i.imgur.com/U5BKdFF.png",
@@ -270,7 +289,7 @@
                 ]
             },
 
-            chap4: {
+            4: {
                 pages: [
                     "https://i.imgur.com/kzWrhhl.png",
                     "https://i.imgur.com/WgljjNE.png",
