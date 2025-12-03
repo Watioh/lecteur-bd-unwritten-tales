@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecteur BD - Unwritten Tales</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
         /* Styles de base */
         body {
             font-family: Arial, sans-serif;
-            /* FOND D'ÉCRAN MIS À JOUR */
+            /* NOUVEAUX STYLES DE FOND */
             background-image: url('https://i.imgur.com/xBLzhCU.png');
-            background-size: cover; 
-            background-attachment: fixed; 
-            background-color: #000; 
+            background-size: cover; /* Couvre toute la zone */
+            background-attachment: fixed; /* Fixe l'image de fond lors du défilement */
+            background-color: #000; /* Couleur de secours si l'image ne charge pas */
             
             color: #fff;
             margin: 0;
@@ -25,32 +24,14 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            /* Conteneur semi-transparent pour la lisibilité */
-            background-color: rgba(26, 26, 26, 0.9); 
+            background-color: rgba(26, 26, 26, 0.9); /* LÉGÈREMENT TRANSPARENT pour laisser voir le fond */
             border-radius: 10px;
         }
 
         h2 {
-            /* STYLES DU TITRE PERSONNALISÉS */
-            font-family: 'Cinzel', serif; /* Nouvelle police */
-            font-size: 2.5em; /* Taille légèrement augmentée */
-            margin-bottom: 20px; 
-            color: #ffe082; /* Couleur dorée */
-            position: relative; /* Pour positionner la barre */
-            padding-bottom: 10px;
+            font-size: 2em;
+            margin-bottom: 10px;
         }
-        
-        /* BARRE SOUS LE TITRE */
-        h2::after {
-            content: '';
-            display: block;
-            width: 100px; /* Largeur de la barre */
-            height: 3px;
-            background: #ffe082; /* Couleur dorée pour la barre */
-            margin: 8px auto 0;
-            border-radius: 2px;
-        }
-
 
         #chapter {
             padding: 10px;
@@ -88,9 +69,8 @@
         }
 
         #prev-btn, #next-btn {
-            /* COULEUR DES BOUTONS RESTAURÉE */
             padding: 12px 25px;
-            background-color: #5cb85c; /* Vert */
+            background-color: #5cb85c;
             color: white;
             border: none;
             border-radius: 5px;
@@ -112,7 +92,7 @@
         #image-modal {
             display: none;
             position: fixed;
-            z-index: 9999; 
+            z-index: 9999; /* TRÈS IMPORTANT */
             padding-top: 0px; 
             left: 0;
             top: 0;
